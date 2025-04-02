@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
+import prisma from '../prisma/prisma.client.js';
 
-const prisma = new PrismaClient();
 const ws = new WebSocket('ws://localhost:9090');
 
 class UserService {
