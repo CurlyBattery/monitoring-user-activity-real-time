@@ -7,6 +7,11 @@
 docker compose up
 ```
 
+## Для запуска миграций
+```bash
+npx prisma db push
+```
+
  ## Для запуска приложения
 ```bash
 npm run start

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Monitoring User Activity</title>
+</head>
+<body>
+<h1>Routes</h1>
+
+<table>
+    <tr>
+        <th>Method</th>
+        <th>Count visits</th>
+    </tr>
+    <tr>
+        <td>POST</td>
+        <td id="post-field">0</td>
+    </tr>
+    <tr>
+        <td>GET ALL</td>
+        <td id="get-all-field">0</td>
+    </tr>
+    <tr>
+        <td>GET ONE</td>
+        <td id="get-one-field">0</td>
+    </tr>
+    <tr>
+        <td>PATCH</td>
+        <td id="patch-field">0</td>
+    </tr>
+    <tr>
+        <td>DELETE</td>
+        <td id="delete-field" >0</td>
+    </tr>
+</table>
+<script>
+  const postField = document.getElementById('post-field');
+  const getAllField = document.getElementById('get-all-field');
+  const getOneField = document.getElementById('get-one-field');
+  const PatchField = document.getElementById('patch-field');
+  const DeleteField = document.getElementById('delete-field');
+  let countPostField = parseInt(postField.outerText);
+  countPostField++;
+  postField.innerHTML = countPostField;
+</script>
+
+</body>
+</html>
