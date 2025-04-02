@@ -17,7 +17,7 @@
     </tr>
     <tr>
         <td>POST</td>
-        <td id="post-field">0</td>
+        <td id="post-field"></td>
     </tr>
     <tr>
         <td>GET ALL</td>
@@ -36,15 +36,66 @@
         <td id="delete-field" >0</td>
     </tr>
 </table>
+
+<div id="chat"></div>
 <script>
+  let postCount = 0;
+  let getAllCount = 0;
+  let getOneCount = 0;
+  let patchCount = 0;
+  let deleteCount = 0;
   const postField = document.getElementById('post-field');
   const getAllField = document.getElementById('get-all-field');
   const getOneField = document.getElementById('get-one-field');
-  const PatchField = document.getElementById('patch-field');
-  const DeleteField = document.getElementById('delete-field');
-  let countPostField = parseInt(postField.outerText);
-  countPostField++;
-  postField.innerHTML = countPostField;
+  const patchField = document.getElementById('patch-field');
+  const deleteField = document.getElementById('delete-field');
+  postField.innerHTML = postCount.toString();
+  getAllField.innerHTML = getAllCount.toString();
+  getOneField.innerHTML = getOneCount.toString();
+  patchField.innerHTML = patchCount.toString();
+  deleteField.innerHTML = deleteCount.toString();
+
+  async function getBlobText(blob) {
+    return await blob.text();
+  }
+
+  var socket = new WebSocket("ws://localhost:9090");
+
+  socket.onopen = function(e) {
+    alert("Соединение установлено");
+  };
+
+  socket.onmessage = function(event) {
+    // При получении нового сообщения от сервера, отображаем его в чате
+    getBlobText(event.data).then(data => displayMessage(data))
+  };
+
+  // Функция для отображения сообщения в чате
+  function displayMessage(message) {
+    const parseData = JSON.parse(message);
+    switch (parseData.method) {
+      case 'POST':
+        postCount++;
+        postField.innerHTML = postCount.toString();
+        break;
+      case 'GET_ALL':
+        getAllCount++;
+        getAllField.innerHTML = getAllCount.toString();
+        break;
+      case 'GET_ONE':
+        getOneCount++;
+        getOneField.innerHTML = getOneCount.toString();
+        break;
+      case 'PATCH':
+        patchCount++;
+        patchField.innerHTML = patchCount.toString();
+        break;
+      case 'DELETE':
+        deleteCount++;
+        deleteField.innerHTML = deleteCount.toString();
+        break;
+    }
+  }
 </script>
 
 </body>

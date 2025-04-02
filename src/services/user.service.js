@@ -1,10 +1,13 @@
 import { PrismaClient } from '@prisma/client';
+
 const prisma = new PrismaClient();
+const ws = new WebSocket('ws://localhost:9090');
 
 class UserService {
   constructor() {}
 
   async create(req, res) {
+
     const existsUser = await prisma.user.findUnique({
       where: {
         email: req.body.email,
@@ -16,11 +19,21 @@ class UserService {
         ...req.body,
       }
     });
+    const msg = {
+      method: 'POST',
+    };
+    const serializedData = JSON.stringify(msg);
+    ws.send(serializedData);
     res.json(newUser);
   }
 
   async getUsers(req, res) {
     const users = await prisma.user.findMany();
+    const msg = {
+      method: 'GET_ALL',
+    };
+    const serializedData = JSON.stringify(msg);
+    ws.send(serializedData);
     res.json(users);
   }
 
@@ -29,6 +42,11 @@ class UserService {
       where: {id: +req.params.id}
     });
     if(!user) return res.status(404).send({ msg: 'User not found' });
+    const msg = {
+      method: 'GET_ONE',
+    };
+    const serializedData = JSON.stringify(msg);
+    ws.send(serializedData);
     res.json(user);
   }
 
@@ -46,6 +64,11 @@ class UserService {
         ...req.body,
       }
     });
+    const msg = {
+      method: 'PATCH',
+    };
+    const serializedData = JSON.stringify(msg);
+    ws.send(serializedData);
     res.json(updateUser);
   }
 
@@ -60,6 +83,11 @@ class UserService {
     const deleteUser = await prisma.user.delete({
       where: {id: +req.params.id}
     });
+    const msg = {
+      method: 'DELETE',
+    };
+    const serializedData = JSON.stringify(msg);
+    ws.send(serializedData);
     res.json({id: deleteUser.id});
   }
 
